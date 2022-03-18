@@ -82,7 +82,7 @@ int main(int argc, char *argv[]) {
         
     if(if_file_MG && if_F && if_T && if_W){   
     // generowanie grafu       
-	
+	grafgen(x, k ,l);
 	if(if_BFS){    // gdy sprawdzanie spojnosc, jezeli szukanie to rowniez if(if_BFS && if_N && if_file_RN)  czyli liczba szukanych par oraz info jakie to pary.
 	//uzycie BFS
 	}
