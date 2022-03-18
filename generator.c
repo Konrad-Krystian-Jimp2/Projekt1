@@ -1,3 +1,4 @@
+//wersja generatora, która ma na celu sprawdzenie poprawności działania.
 //#include "generator.h"
 #include <stdio.h>
 #include <time.h>
