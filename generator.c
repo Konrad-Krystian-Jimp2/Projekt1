@@ -1,5 +1,4 @@
-//wersja generatora, która ma na celu sprawdzenie poprawności działania.
-//#include "generator.h"
+#include "generator.h"
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
@@ -22,37 +21,42 @@ int grafgen(int w, int k, int l)
 		for(j=0; j<w; j++){
 			tab[i][j]=-1;}}
 	
-	for(i=0; i<w; i++){
+	for(i=0; i<w; i++)
 		pol[i]=rand() % w;
-		printf("%d\n", pol[i]);}
+
 	for(i=0; i<w; i++)
 	{
 		for(j=0; j<w; j++)
 			if(tab[j][i]!=-1)
 				c++;
-		while(pol[i]>c){
-		while(x==i)
-		x=rand() % w;
-		
-		while(tab[x][i]!=-1)
+		while(pol[i]>=c)
 		{
 			x=rand() % w;
-		}
-		tab[x][i]=los(k, l);
-		tab[i][x]=tab[x][i];
-		pol[i]--;
+			if(pol[x]>=-1)
+			{	
+				while(tab[x][i]!=-1 && i==x)
+					x=rand() % w;
+				
+				if(x!=i)
+				{
+					tab[x][i]=los(k, l);
+					tab[i][x]=tab[x][i];
+					pol[i]--;
+				}
+			}
 		}
 		c=0;
 	}
-
+	/*do testów
 	for(i=0; i<w; i++)
 	{
 		printf("\n");
 		for(j=0; j<w; j++)
 			printf("%f   ", tab[j][i]);
-	}printf("\n");
+	}printf("\n");*/
 	return 0;
 }
+/*do testów
 int main()
 {
 	int a,b,c,i;
@@ -60,5 +64,5 @@ int main()
 	printf("\n%d, %d, %d\n", a, b, c);
 	grafgen(a, b, c);
 	return 0;
-}
+}*/
 
