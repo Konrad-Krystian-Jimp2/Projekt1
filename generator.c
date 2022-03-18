@@ -1,3 +1,4 @@
+//na razie generator generuje tylko graf. Zwracanie grafu przez funkcję zostanie dopracowane.
 #include "generator.h"
 #include <stdio.h>
 #include <time.h>
