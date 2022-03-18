@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <getopt.h>
 #include "komunikaty.h"
+#include "generator.h"
 
 
 int main(int argc, char *argv[]) {
