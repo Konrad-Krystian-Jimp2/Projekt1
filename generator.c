@@ -35,7 +35,7 @@ int grafgen(int w, int k, int l)
 			x=rand() % w;
 			if(pol[x]>=-1)
 			{	
-				while(tab[x][i]!=-1 && i==x)
+				while(tab[x][i]!=-1 && i!=x)
 					x=rand() % w;
 				
 				if(x!=i)
