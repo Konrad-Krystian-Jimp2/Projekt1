@@ -17,8 +17,8 @@ int main(int argc, char *argv[]) {
     char* Read_Nodes = NULL;
     char* Read_Graph = NULL;
     int x;
-    int k;
-    int l;
+    float k;
+    float l;
     int n;
 
 
@@ -45,13 +45,13 @@ int main(int argc, char *argv[]) {
 			} else
 			Show_Error(2);
                  break;
-             case 'f' : if(atoi(optarg) < 0)
+             case 'f' : if(atof(optarg) < 0)
 			Show_Error(7);
-		 	k = atoi(optarg); if_F++; 
+		 	k = atof(optarg); if_F++; 
                  break;
-             case 't' : if(atoi(optarg) < 0)
+             case 't' : if(atof(optarg) < 0)
 			Show_Error(7);
-		 	l = atoi(optarg); if_T++;
+		 	l = atof(optarg); if_T++;
                  break;
 	     case 'r' : Read_Graph = optarg; if_file_RG++;
 		 break;
@@ -82,7 +82,8 @@ int main(int argc, char *argv[]) {
         
     if(if_file_MG && if_F && if_T && if_W){   
     // generowanie grafu       
-	grafgen(x, k ,l);
+	grafgen(x, k, l);
+
 	if(if_BFS){    // gdy sprawdzanie spojnosc, jezeli szukanie to rowniez if(if_BFS && if_N && if_file_RN)  czyli liczba szukanych par oraz info jakie to pary.
 	//uzycie BFS
 	}
