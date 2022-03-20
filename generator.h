@@ -1,9 +1,9 @@
-#ifndef _generator_h
-#define _generator_h
+#ifndef _GENERATOR_H
+#define _GENERATOR_H
 #include <stdio.h>
 
-float los(double, double);
+float los(float, float);
 
-int grafgen(int, int, int);
+void grafgen(int, float, float);
 
 #endif
