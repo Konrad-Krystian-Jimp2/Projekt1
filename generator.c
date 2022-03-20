@@ -1,6 +1,5 @@
 //program generuje graf nieskierowany
 //Zwracanie grafu nie zostało jeszcze opracowane
-//"***" oznacza, że ten warunek został dodany, aby generator działał dla małych grafów składających się z mniej niż ~7 wierzchołków
 #include "generator.h"
 #include <stdio.h>
 #include <time.h>
