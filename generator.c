@@ -1,68 +1,77 @@
-//na razie generator generuje tylko graf. Zwracanie grafu przez funkcję zostanie dopracowane.
+//program generuje graf nieskierowany
+//Zwracanie grafu nie zostało jeszcze opracowane
+//"***" oznacza, że ten warunek został dodany, aby generator działał dla małych grafów składających się z mniej niż ~7 wierzchołków
 #include "generator.h"
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
 
-float los(double min, double max)//losowanie liczb rzeczywistych
+float los(float min, float max)//losowanie liczb rzeczywistych
 {
 	float przedzial=max-min;
 	float x=RAND_MAX/przedzial;
 	return min+(rand()/x);
 }
 
-int grafgen(int w, int k, int l)
+void grafgen(int x, float k, float l)
 {
-	float tab[w][w];//macierz sąsiedztwa
-	int pol[w], i, j, x, c=0;
-	
+	int pol[x], i, j, w, c=0, z=0;
+	float tab[x][x];//tablica sąsiedztwa	
 	srand(time(NULL));
+	for(i=0; i<x; i++)//uzupełnianie tablicy sąsiedztwa liczbami "-1"
+		for(j=0; j<x; j++)
+			tab[i][j]=-1;
+	for(i=0; i<x; i++){//losowanie liczby przejść dla każdego węzła
+		pol[i]=rand() % (x-1);
+		printf("\n%d\n", pol[i]);}
 
-	for(i=0; i<w; i++){
-		for(j=0; j<w; j++){
-			tab[i][j]=-1;}}
-	
-	for(i=0; i<w; i++)
-		pol[i]=rand() % w;
-
-	for(i=0; i<w; i++)
+	for(i=0; i<x; i++)
 	{
-		for(j=0; j<w; j++)
-			if(tab[j][i]!=-1)
+
+		for(j=0; j<x; j++)//zliczanie wykorzystanych przejść dla aktualnego węzła
+			if(tab[i][j]!=-1)
 				c++;
-		while(pol[i]>=c)
+		
+		while(pol[i]>=c)//dopóki możliwe są przejścia dla aktualnego węzła(+1 więcej niż było wylosowane***)
 		{
-			x=rand() % w;
-			if(pol[x]>=-1)
+			w=rand() % x;//losowanie węzła, do którego nastapić ma kolejne przejście
+			if(pol[w]>=0)// przejście do węzła "w" nastąpi jeżeli węzeł "w" ma możliwość dodania kolejnego połączenia(+1 więcej niż było wylosowane***)
 			{	
-				while(tab[x][i]!=-1 && i!=x)
-					x=rand() % w;
+				while(tab[w][i]!=-1 && i!=w)//dopóki nie znajdzie liczby "-1" oraz nie będzie to liczba na diagonali
+					w=rand() % (x-1);// losowany będzie  kolejny węzeł
 				
-				if(x!=i)
+				if(w!=i)//dodatkowe sprawdzenie, czy kolejny węzeł nie jest na diagonali
 				{
-					tab[x][i]=los(k, l);
-					tab[i][x]=tab[x][i];
-					pol[i]--;
+					tab[w][i]=los(k, l);//wylosowanie wartości rzeczywistej z określonego przedziału
+					tab[i][w]=tab[w][i];//wpisanie wylosowanej wartości do analogicznej komórki po drugiej stronie diagonali (graf nieskierowany)
+					pol[i]--;//oznaczenie utworzenia połączenia poprzez zmniejszenie liczby możliwych przejść z danego węzłą
 				}
 			}
 		}
 		c=0;
 	}
-	/*do testów
-	for(i=0; i<w; i++)
+	/*do testów*/
+	for(i=0; i<x; i++)//wypisanie tablicy sąsiedztwa
 	{
 		printf("\n");
-		for(j=0; j<w; j++)
-			printf("%f   ", tab[j][i]);
-	}printf("\n");*/
-	return 0;
+		for(j=0; j<x; j++)
+			printf("%f ", tab[j][i]);
+	}
+	printf("\n");
+	
+	for(i=0; i<x; i++){
+		for(j=0; j<x; j++)
+			if(tab[j][i]==-1)
+				z++;}
+	printf("\nLiczba '-1' w grafie: %d\n", z);
+	printf("\nŚrednia liczba przejść dla wierzchołka: %d\n", ((x*x)-z)/(x));/**/
 }
 /*do testów
 int main()
 {
-	int a,b,c,i;
-	scanf("%d %d %d", &a, &b, &c);
-	printf("\n%d, %d, %d\n", a, b, c);
+	float a,b,c,i;
+	scanf("%f %f %f", &a, &b, &c);
+	printf("\n%f, %f, %f\n", a, b, c);
 	grafgen(a, b, c);
 	return 0;
 }*/
