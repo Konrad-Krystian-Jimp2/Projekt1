@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <getopt.h>
 #include "komunikaty.h"
-#include "generator.h"
 
 
 int main(int argc, char *argv[]) {
@@ -11,14 +10,14 @@ int main(int argc, char *argv[]) {
 	Show_Error(1);
 	
     int opt;
-    int if_BFS = 0, if_file_MG = 0, if_W = 0, if_F = 0, if_T = 0, if_file_RG = 0, if_file_RN = 0, if_N = 0; 
+    int if_BFS = 0, if_file_MG = 0, if_P = 0,if_Q =0, if_F = 0, if_T = 0, if_file_RG = 0, if_file_RN = 0, if_N = 0;  // imitacja boolean 0- fałsz, 1- prawda czyli dane wystąpienie podczas wprowadzania danych 
     
     char* Make_Graph = NULL;
     char* Read_Nodes = NULL;
     char* Read_Graph = NULL;
-    int x;
-    float k;
-    float l;
+    int p,q; // p - kolumny, q - wiersze
+    int k;
+    int l;
     int n;
 
 
@@ -26,38 +25,44 @@ int main(int argc, char *argv[]) {
     static struct option long_options[] = {
         {"help",      no_argument,       0,  'h' },
         {"bfs",       no_argument,       0,  'b' },
-        {"file",    required_argument,   0,  'p' },
+        {"file",    required_argument,   0,  'z' },
         {0,           0,                 0,   0  }
     };
 
     int long_index =0;
 
-    while ((opt = getopt_long(argc, argv,"hg:w:f:t:r:b:p:n:", 
+    while ((opt = getopt_long(argc, argv,"hg:p:q:f:t:r:b:p:n:", 
                    long_options, &long_index )) != -1) {
         switch (opt) {
 	     case 'h' : Show_Error(1);
 		 break;
 	     case 'g' : Make_Graph = optarg; if_file_MG++;      
                  break;
-             case 'w' : if( !(atoi(optarg) - atof(optarg)) && atoi(optarg) > 1){   // sprawdzam czy calkowita i czy wieksza niz jeden
-		 	x = atoi(optarg);
-			if_W++;
+             case 'p' : if( !(atoi(optarg) - atof(optarg)) && atoi(optarg) > 1){   // sprawdzam czy calkowita i czy wieksza niz jeden
+		 	p = atoi(optarg);
+			if_P++;
 			} else
 			Show_Error(2);
                  break;
-             case 'f' : if(atof(optarg) < 0)
-			Show_Error(7);
-		 	k = atof(optarg); if_F++; 
+             case 'q' : if( !(atoi(optarg) - atof(optarg)) && atoi(optarg) > 1){   
+		 	q = atoi(optarg);
+			if_Q++;
+			} else
+			Show_Error(2);
                  break;
-             case 't' : if(atof(optarg) < 0)
+             case 'f' : if(atoi(optarg) < 0)
 			Show_Error(7);
-		 	l = atof(optarg); if_T++;
+		 	k = atoi(optarg); if_F++; 
+                 break;
+             case 't' : if(atoi(optarg) < 0)
+			Show_Error(7);
+		 	l = atoi(optarg); if_T++;
                  break;
 	     case 'r' : Read_Graph = optarg; if_file_RG++;
 		 break;
 	     case 'b' : if_BFS++;
 		 break;
-	     case 'p' : Read_Nodes = optarg; if_file_RN++;
+	     case 'z' : Read_Nodes = optarg; if_file_RN++;
 		 break; 
 	     case 'n' : if( !(atoi(optarg) - atof(optarg)) && atoi(optarg) >= 1){
 			n = atoi(optarg);
@@ -72,20 +77,24 @@ int main(int argc, char *argv[]) {
        
 
 
-    if(if_F && if_T)
+    if(if_F && if_T) // gdy początek przedziału jest większy niż koniec)
      if(k>l)
      Show_Error(3);
 
-    if(!if_file_MG && if_F && if_T && if_W)
+    if(if_file_MG && if_P && if_Q && (!if_F  || !if_T)) // gdy nie podano przedziału wagowego
+     Show_Error(8);
+
+    if(!if_file_MG && if_F && if_T && if_P && if_Q) //gdy nie podano -g a podano resztę
      Show_Error(5);
 
         
-    if(if_file_MG && if_F && if_T && if_W){   
-    // generowanie grafu       
-	grafgen(x, k, l);
-
+    if(if_file_MG && if_F && if_T && if_P && if_Q){   
+    // generowanie grafu 
+    printf("\t Generuje graf\n");      
+	
 	if(if_BFS){    // gdy sprawdzanie spojnosc, jezeli szukanie to rowniez if(if_BFS && if_N && if_file_RN)  czyli liczba szukanych par oraz info jakie to pary.
 	//uzycie BFS
+	printf("\t BFS\n");
 	}
 
 	//if(if_N && if_file_RN ...   -> Dijkstra
@@ -96,6 +105,7 @@ int main(int argc, char *argv[]) {
 
     if(if_file_RG){
     //czytanie grafu
+    printf("\t Czytam graf\n");
 	     
 		    
     

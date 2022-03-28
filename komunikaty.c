@@ -38,13 +38,18 @@ void Show_Error(int which_error){
 	   break;
 
  	   case 6 :
-	      fprintf(stderr,"Wprowadzono nieodpowiednia liczbe okreslajaca ilosc par, miedzy ktorymi wyznaczone bedd sciezki\n");
+	      fprintf(stderr,"Wprowadzono nieodpowiednia liczbe okreslajaca ilosc par, miedzy ktorymi wyznaczone beda sciezki\n");
 	      exit(6);
 	   break;
 	   case 7 :
 	      fprintf(stderr,"Wprowadzono niewlasciwa liczbe wyznaczajaca przedzial, z którego losowane beda wagi\n");
 	      exit(7);
 	   break;
+	   case 8 :
+	      fprintf(stderr,"Brak przedzialu wagowego dla generowanego grafu\n");
+	      exit(8);
+	   break;
+
 
 	   default:
 	      fprintf(stderr, "error!\n");
