@@ -1,13 +1,22 @@
-grafexe: main.o komunikaty.o generator.o
-	$(CC) -o grafexe $^
+  #CFLAGS= -g -Wall -Wextra
+
+grafexe: main.o komunikaty.o generator.o czytacz.o bfs.o queue.o
+	$(CC) -g -o grafexe $^ 
 clean:
 	rm *.o
 	rm grafexe
-	rm test
-	rm wyniki
-test: test_czytacz.c czytacz.o
-	$(CC) -o test $^
+	rm test_czytacz
+	rm log
+	rm test_que
+	rm test_BFS
+test: test_czytacz.o czytacz.o 
+	$(CC) -o test_czytacz $^
+	$(CC) -o test_que test_que.c queue.c 
+	$(CC) -o test_BFS bfs_test.c bfs.c queue.c czytacz.c 
+	./test_czytacz dane/mygraph
+	./test_que
+	./test_BFS dane/mydane1 8
+test2: 
+	./test_czytacz dane/graph2x3
 	
-test_run:	
-	./test dane_test_write_to_file wyniki
 

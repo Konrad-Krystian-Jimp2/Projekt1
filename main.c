@@ -2,13 +2,14 @@
 #include <stdlib.h>
 #include <getopt.h>
 #include "komunikaty.h"
-
+#include "czytacz.h"
+#include "bfs.h"
 
 int main(int argc, char *argv[]) {
     
 	if(argc==1)
 	Show_Error(1);
-	
+    	
     int opt;
     int if_BFS = 0, if_file_MG = 0, if_P = 0,if_Q =0, if_F = 0, if_T = 0, if_file_RG = 0, if_file_RN = 0, if_N = 0;  // imitacja boolean 0- fałsz, 1- prawda czyli dane wystąpienie podczas wprowadzania danych 
     
@@ -88,10 +89,16 @@ int main(int argc, char *argv[]) {
      Show_Error(5);
 
         
-    if(if_file_MG && if_F && if_T && if_P && if_Q){   
-    // generowanie grafu 
-    printf("\t Generuje graf\n");      
-	
+    if(if_file_MG && if_F && if_T && if_P && if_Q){    
+     printf("\t Generuje graf\n");  
+
+      graph_t ptr = Make_Graph_Struct();
+      MakeSpace_Graph( ptr, p, q );
+      // Gen_Greaph();
+      WriteToFile( Read_Graph, ptr );
+
+    
+
 	if(if_BFS){    // gdy sprawdzanie spojnosc, jezeli szukanie to rowniez if(if_BFS && if_N && if_file_RN)  czyli liczba szukanych par oraz info jakie to pary.
 	//uzycie BFS
 	printf("\t BFS\n");
@@ -99,16 +106,23 @@ int main(int argc, char *argv[]) {
 
 	//if(if_N && if_file_RN ...   -> Dijkstra
 		
+    freeSpace(ptr);
     }
 
     
 
     if(if_file_RG){
-    //czytanie grafu
-    printf("\t Czytam graf\n");
-	     
-		    
-    
+     graph_t ptr2 = Make_Graph_Struct();
+     ReadFromFile( Read_Graph, ptr2 );
+         
+     if( if_BFS ){
+      int* path = BFS( ptr2 );
+        if( path == NULL )
+          exit(EXIT_FAILURE);	
+     free(path); 
+     }
+
+    freeSpace(ptr2);
     }
 
     return 0;
