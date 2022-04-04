@@ -24,7 +24,7 @@ void dijkstra(char* plik, int pocz, int kon, int w, int k, graph_t ptr)
 		for(j=0; j<dot; j++)
 		{
 			if(graf[i][j]==-1)
-				waga[i][j]==NIESK;
+				waga[i][j]=NIESK;
 			else
 				waga[i][j]=graf[i][j];
 		}
