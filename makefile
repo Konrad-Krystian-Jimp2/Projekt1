@@ -18,7 +18,7 @@ test: test_czytacz.o czytacz.o
 	./test_czytacz dane/mygraph
 	./test_que
 	./test_BFS dane/mydane1 8
-	./test_generator dane/ddgen
+	#./test_generator dane/ddgen
 test2: 
 	./test_czytacz dane/graph2x3
 	
