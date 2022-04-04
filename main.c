@@ -4,7 +4,8 @@
 #include "komunikaty.h"
 #include "czytacz.h"
 #include "bfs.h"
-
+#include "generator.h"
+#include "dijkstra.h"
 int main(int argc, char *argv[]) {
     
 	if(argc==1)
@@ -19,7 +20,7 @@ int main(int argc, char *argv[]) {
     int p,q; // p - kolumny, q - wiersze
     int k;
     int l;
-    int n;
+    int n, i;
 
 
 
@@ -89,24 +90,24 @@ int main(int argc, char *argv[]) {
      Show_Error(5);
 
         
-    if(if_file_MG && if_F && if_T && if_P && if_Q){    
+    if(if_file_MG && if_F && if_T && if_P && if_Q){
      printf("\t Generuje graf\n");  
 
       graph_t ptr = Make_Graph_Struct();
       MakeSpace_Graph( ptr, p, q );
-      // Gen_Greaph();
+      ptr->graph=grafgen(q, p, k, l);
       WriteToFile( Read_Graph, ptr );
 
     
 
 	if(if_BFS){    // gdy sprawdzanie spojnosc, jezeli szukanie to rowniez if(if_BFS && if_N && if_file_RN)  czyli liczba szukanych par oraz info jakie to pary.
 	//uzycie BFS
-	printf("\t BFS\n");
+	    printf("\t BFS\n");
 	}
 
 	//if(if_N && if_file_RN ...   -> Dijkstra
-		
-    freeSpace(ptr);
+
+        freeSpace(ptr);
     }
 
     
