@@ -9,7 +9,7 @@ void dijkstra(char* plik, int pocz, int kon, int w, int k, graph_t ptr)
     FILE* out= fopen(plik, "a");
 	int i, j, dot=w*k, ojciec[dot], odw[dot], c, min, nast;
 	double waga[dot][dot], odleglosc[dot], graf[dot][dot];
-	int ind=dot*dot;
+	int ind=(dot*dot)-1;
 
     	for(i=dot-1; i>=0; i--)
     		for(j=dot-1; j>=0; j--)
