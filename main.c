@@ -6,6 +6,7 @@
 #include "bfs.h"
 #include "generator.h"
 #include "dijkstra.h"
+
 int main(int argc, char *argv[]) {
     
 	if(argc==1)
@@ -116,15 +117,38 @@ int main(int argc, char *argv[]) {
      graph_t ptr2 = Make_Graph_Struct();
      ReadFromFile( Read_Graph, ptr2 );
          
-     if( if_BFS ){
-      int* path = BFS( ptr2 );
-        if( path == NULL )
-          exit(EXIT_FAILURE);	
-     free(path); 
-     }
+       if( if_BFS ){
+         int* path = BFS( ptr2 );
+           if( path == NULL ){
+     	     free(path); 
+             exit(EXIT_FAILURE);
+           }	  
+       free(path); 
+       }
 
-    freeSpace(ptr2);
-    }
+      if(if_N && if_file_RN){
+      int* Nodes = ReadNodesFromFile( Read_Nodes, n, ptr2 );    // początek sciezki to Nodes[0] koniec to Nodes[1], dalej.. początek Nodes[2] koniec Nodes[3] itd..
+
+	for(int z=0;z<n;z++){
+	  printf("Szukam sciezki z \t%d --- do --- > %d \n", Nodes[z*2], Nodes[z*2+1]);
+        	
+		// int* paths   =  dijkstra( [graph]:  ptr2,  [start]:   Nodes[z*2],   [finish]:   Nodes[z*2+1] );      
+	}
+
+
+      free(Nodes);
+      }	
+     	
+
+
+
+
+
+
+
+
+      freeSpace(ptr2);
+      }
 
     return 0;
 }

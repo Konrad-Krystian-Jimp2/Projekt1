@@ -50,7 +50,10 @@ void Show_Error(int which_error){
 	      fprintf(stderr,"Brak przedzialu wagowego dla generowanego grafu\n");
 	      exit(8);
 	   break;
-
+	 /*  case 9 :
+	      fprintf(stderr,"Nie da sie znalezc jeden z podanych sciezek\n");
+	      exit(9);
+	*/
 
 	   default:
 	      fprintf(stderr, "error!\n");
