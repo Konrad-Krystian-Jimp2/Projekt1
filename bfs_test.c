@@ -35,7 +35,8 @@ int main(int argc, char** argv){
   	}	  
 
 
-fprintf(out,"\n\n\nSzukam sciezki od 0 do %d droga:\n\n\n",f);
+fprintf(out,"\n\n\nSzukam sciezki od 0 do %d droga:",f);
+	fprintf(out,"\n koszt drogi path[n+wybrany] dla wybranego wierzchołka rowna sie: %d\n\n\n", path[n+f]);
 
 	int temp;
 	int counter=0;
@@ -58,6 +59,7 @@ fprintf(out,"\n\n\nSzukam sciezki od 0 do %d droga:\n\n\n",f);
 	}	
 	fprintf(out,"\n Koszt drogi to: %d\n", counter);
 	fprintf(out,"\n Poprawność znalezionej sciezki można sprawdzić z dołączonymi w pliku obrazami [dane/obrazy]\n");
+
 
 fclose(out);
 free( path );

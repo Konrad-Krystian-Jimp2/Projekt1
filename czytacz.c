@@ -69,7 +69,8 @@ void ReadFromFile(char* file_name, graph_t ptr){
      int tempColumns, tempRows; 
 
      if(fscanf(in,"%d %d\n", &tempColumns, &tempRows) != 2){
- 	fprintf(stderr, "\t[czytacz.c]: Nie udalo sie przeczytac ilosci wezlow\n");
+	fprintf(stderr, "[czytacz.c]: Zly format pliku\n");
+ //	fprintf(stderr, "\t[czytacz.c]: Nie udalo sie przeczytac ilosci wezlow\n");
         exit(EXIT_FAILURE);
      }
 
@@ -78,9 +79,11 @@ void ReadFromFile(char* file_name, graph_t ptr){
      int n = ptr->columns * ptr->rows;
      char BUF[MAX_SIZE];
      int i = 0;	
-     int HowManyNumbersInRow =0; // ile liczb do oczytania w linii
-     int HowManyRows =0;  // ile jest lini do czytania
+     int HowManyNumbersInRow = 0; // ile liczb do oczytania w linii
+     int HowManyRows = 0;  // ile jest lini do czytania
      int NumbersInLine[n];  // przechowuje informacje ile jest liczb do odczytu w poszczególnej linii
+     int ifallempty = 0; // sprawdza czy wszyskie linie nie sa puste (nie maja ':')
+     int iftoobig = 0; // segfoult gdy ktos sie pomyli w rozmiarach
 
     while( fgets(BUF, MAX_SIZE, in) != NULL ){
 	while( BUF[i] != '\n' ) {
@@ -94,19 +97,38 @@ void ReadFromFile(char* file_name, graph_t ptr){
      printf("WhichRow = %d\n\n\n", HowManyRows);
 #endif  
     NumbersInLine[HowManyRows] = HowManyNumbersInRow;
-    HowManyRows++;	
+   	 
+       HowManyRows++;
+
+       if( HowManyRows > n ){ // czyta wiecej niz jest na to miejsca, czyli blad przy podawaniu danych  
+	fprintf(stderr, "[czytacz.c]:  Zly format pliku  (sprawdz poprawnosc podawanych wymiarow grafu) \n");
+	exit(EXIT_FAILURE);
+       }
+
+       if( HowManyNumbersInRow == 0 )
+	  ifallempty++;
     i=0;	
     HowManyNumbersInRow =0;
     }
+      if(ifallempty == HowManyRows){
+	fprintf(stderr, "[czytacz.c]: ! Zly format pliku\n");
+	exit(EXIT_FAILURE);
+      }
+       
+
 
     fseek(in,4,SEEK_SET); // cofnięcie się na początek pliku (w miejsce po liczbach kolumn i wierszy)
 
     int tempWhereConnection;
     double tempValue;
-	
+
 	for(int x=0; x<HowManyRows; x++)
           for(int k=0; k<NumbersInLine[x]; k++){
-	      fscanf(in, "%d :%lf", &tempWhereConnection, &tempValue);
+	      if(fscanf(in, "%d :%lf", &tempWhereConnection, &tempValue)!= 2){
+		 fprintf(stderr, "[czytacz.c]: Zly format pliku\n");
+		   exit(EXIT_FAILURE);
+	      }
+      	    
 #ifdef DEBUG	      
     printf("Row: %d, Column: %d and Value: %lf\n", x, tempWhereConnection, tempValue);
 #endif	    
@@ -116,6 +138,7 @@ void ReadFromFile(char* file_name, graph_t ptr){
     ShowMeMatrix(n,ptr);
 #endif
     fclose( in );
+
 }
 
 	
