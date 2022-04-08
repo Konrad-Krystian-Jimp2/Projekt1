@@ -1,6 +1,6 @@
-  #CFLAGS= -g -Wall -Wextra
+ # CFLAGS= -g -Wall -Wextra
 
-grafexe: main.o komunikaty.o generator.o czytacz.o bfs.o queue.o #dijkstra.o
+grafexe: main.o komunikaty.o generator.o czytacz.o bfs.o queue.o dij.o pqmin.o
 	$(CC) -g -o grafexe $^ 
 clean:
 	rm *.o

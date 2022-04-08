@@ -5,7 +5,7 @@
 #include "czytacz.h"
 #include "bfs.h"
 #include "generator.h"
-#include "dijkstra.h"
+#include "dij.h"
 
 int main(int argc, char *argv[]) {
     
@@ -118,23 +118,24 @@ int main(int argc, char *argv[]) {
      ReadFromFile( Read_Graph, ptr2 );
          
        if( if_BFS ){
-         int* path = BFS( ptr2 );
-           if( path == NULL ){
-     	     free(path); 
+         int* pathBFS = BFS( ptr2 );
+           if( pathBFS == NULL ){
+     	     free(pathBFS); 
              exit(EXIT_FAILURE);
            }	  
-       free(path); 
+       free(pathBFS); 
        }
 
       if(if_N && if_file_RN){
-      int* Nodes = ReadNodesFromFile( Read_Nodes, n, ptr2 );    // początek sciezki to Nodes[0] koniec to Nodes[1], dalej.. początek Nodes[2] koniec Nodes[3] itd..
-
-	for(int z=0;z<n;z++){
+      int* Nodes = ReadNodesFromFile( Read_Nodes, n, ptr2 ); 
+	
+        for(int z=0;z<n;z++){
 	  printf("Szukam sciezki z \t%d --- do --- > %d \n", Nodes[z*2], Nodes[z*2+1]);
-        	
-		// int* paths   =  dijkstra( [graph]:  ptr2,  [start]:   Nodes[z*2],   [finish]:   Nodes[z*2+1] );      
+	dij_t pd = dij( ptr2, Nodes[z*2], Nodes[z*2+1] );
+	ShowPath( pd, Nodes[z*2], Nodes[z*2+1], ptr2->columns * ptr2->rows );
+	  printf("Waga tej sciezki to: %g\n\n\n", pd->dist[Nodes[z*2+1]]);
+	freeDIJ(pd);	
 	}
-
 
       free(Nodes);
       }	
