@@ -47,15 +47,25 @@ return pd;
 
 
 void ShowPath( dij_t pd, int from, int to, int n ){
+    
+    FILE* out = fopen("wyniki", "w");
+     if( out == NULL ){
+	fprintf(stderr, "Nie udalo sie otworzyc pliku: wyniki\n");
+    	exit(1);
+     }
+    
+    if(n > 100)
+      printf("\nCalkiem sporo tego! Rozwiazanie znajdziesz w pliku: \t'wyniki'\n\n"); 
+    
     int counter =0;
     int temp;
     for(int i =0; i<n; i++){
       temp= pd->path[to];
 	if( temp == -1 ){
-    	  fprintf(stdout,"Drogi nie ma i nie bedzie :( \n");
+    	  fprintf(n>100 ? out : stdout,"Drogi nie ma i nie bedzie :( \n");
           return;
         }
-          fprintf(stdout,"%d -> %d\n", pd->path[to], to);
+          fprintf(n>100 ? out : stdout,"%d -> %d\n", pd->path[to], to);
 	  to = temp;
 	    counter++;
      if( to == from )
@@ -65,6 +75,8 @@ void ShowPath( dij_t pd, int from, int to, int n ){
        return;
      }
     }
+
+
 }
 
 void freeDIJ( dij_t pd ){

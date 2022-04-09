@@ -116,15 +116,16 @@ void ReadFromFile(char* file_name, graph_t ptr){
       }
        
 
-
-    fseek(in,4,SEEK_SET); // cofnięcie się na początek pliku (w miejsce po liczbach kolumn i wierszy)
-
+    int bin;
+    fseek(in,0,SEEK_SET); // cofnięcie się na początek pliku (w miejsce po liczbach kolumn i wierszy)
+    fscanf(in,"%d %d\n",&bin, &bin);
     int tempWhereConnection;
     double tempValue;
 
-	for(int x=0; x<HowManyRows; x++)
+	for(int x=0; x<HowManyRows; x++){
+//		printf("sheesh\n");
           for(int k=0; k<NumbersInLine[x]; k++){
-	      if(fscanf(in, "%d :%lf", &tempWhereConnection, &tempValue)!= 2){
+	      if(fscanf(in, "%d: %lg", &tempWhereConnection, &tempValue)!= 2){
 		 fprintf(stderr, "[czytacz.c]: Zly format pliku z grafem [fscanf]\n");
 		   exit(EXIT_FAILURE);
 	      }
@@ -134,6 +135,7 @@ void ReadFromFile(char* file_name, graph_t ptr){
 #endif	    
 	      ptr->graph[x*n + tempWhereConnection] = tempValue;
 	  }
+	}
 #ifdef DEBUG
     ShowMeMatrix(n,ptr);
 #endif
