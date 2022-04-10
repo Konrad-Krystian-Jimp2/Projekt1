@@ -168,7 +168,7 @@ int* ReadNodesFromFile(char* file_name, int n, graph_t ptr){
 	    fprintf(stderr, "[czytacz.c]: Nie da sie znalezc drogi z badz do tego wierzcholka: [ %d ] \n",NodesToFind[i]);
     	    exit(EXIT_FAILURE);
 	  }
-
+fclose(in);
 return NodesToFind;
 }
 

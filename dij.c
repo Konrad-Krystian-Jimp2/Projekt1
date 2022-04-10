@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <limits.h>
-#include "czytacz.h"
-#include "pqmin.h"
+#include <limits.h>   // INT_MAX
+#include "czytacz.h"    
+#include "pqmin.h"    // kolejka priorytetowa - min
 #include "dij.h"
 #define BASE_SIZE 124
 
@@ -20,26 +20,28 @@ dij_t dij( graph_t g, int StartPoint, int DestPoint ){
 	    pd->path[i] = -1;
 	    pd->dist[i] = INT_MAX;
     }
-
-
+	int k =0;
     visited[StartPoint] = 1;
     pd->dist[StartPoint] = 0;
     add_to_pq(q, StartPoint, pd->dist[StartPoint]);
 
     while (not_empty_pq(q)){  
         v_t node = pop_from_pq(q);
-        for (int j = 0; j < n; j++){
+        for (int j = 0; j < n; j++)
             if(g->graph[j+(node->vert)*n] >= 0){
-		if( ( pd->dist[j] > pd->dist[node->vert] + g->graph[j+(node->vert)*n] ) && ( visited[j] == 0 ) ){
+		if( ( pd->dist[j] > pd->dist[node->vert] + g->graph[j+(node->vert)*n] ) /*&& ( visited[j] == 0 )*/ ){
 		    pd->dist[j] = pd->dist[node->vert] + g->graph[j+(node->vert)*n];
 		    add_to_pq(q, j, pd->dist[j]);		    	 	
 		    pd->path[j] = node->vert;
 		}	
             }
-	}
      visited[node->vert] = 1;
-      if(node->vert == DestPoint)
-       return pd;
+      if(node->vert == DestPoint){
+	free_pq(q);
+	free(node);
+	return pd;
+      }
+      free(node);
     }
     free_pq(q);
 return pd;
@@ -55,7 +57,7 @@ void ShowPath( dij_t pd, int from, int to, int n ){
      }
     
     if(n > 100)
-      printf("\nCalkiem sporo tego! Rozwiazanie znajdziesz w pliku: \t'wyniki'\n\n"); 
+      printf("\nPewnie calkiem sporo tego! Rozwiazanie znajdziesz w pliku: \t'wyniki'\n\n"); 
     
     int counter =0;
     int temp;
@@ -63,15 +65,19 @@ void ShowPath( dij_t pd, int from, int to, int n ){
       temp= pd->path[to];
 	if( temp == -1 ){
     	  fprintf(n>100 ? out : stdout,"Drogi nie ma i nie bedzie :( \n");
-          return;
+          fclose(out);
+	  return;
         }
           fprintf(n>100 ? out : stdout,"%d -> %d\n", pd->path[to], to);
 	  to = temp;
 	    counter++;
-     if( to == from )
+     if( to == from ){
+       fclose(out);
        return;
+     }
      if( counter == n-1 ){
        fprintf(stderr,"Drogi nie ma i nie bedzie :( \n");
+       fclose(out);
        return;
      }
     }

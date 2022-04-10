@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "czytacz.h"
-#define MAX_SIZE 1024
+#define MAX_SIZE 120
 //#define DEBUG
 
 graph_t Make_Graph_Struct(){
