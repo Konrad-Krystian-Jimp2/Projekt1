@@ -1,8 +1,8 @@
-#include "generator.h"
 #include "czytacz.h"
+#include "generator.h"
 #include <stdio.h>
-#include <time.h>
 #include <stdlib.h>
+#include <time.h>
 
 double los(double min, double max)//losowanie liczb rzeczywistych
 {
@@ -11,98 +11,62 @@ double los(double min, double max)//losowanie liczb rzeczywistych
 	return min+(rand()/x);
 }
 
-double *grafgen(int w, int k, double p, double pk)
+double *grafgen(double *graf, int w, int k, double po, double pk)
 {
-	int i, j, x, c=0, dot=w*k;
-	int poli[dot];//tablica połączeń
-	double tab[dot][dot];//macierz sąsiedztwa
-	double *macierz;
-	
+	int i, j, dot=w*k, x;
+	//double *graf=malloc((dot*dot)*sizeof(double));
+	//double *graf=graph;
 	srand(time(NULL));
-	
-	for(i=0; i<dot; i++)
-	{//uzupełnianie tablic "-1"
-		for(j=0; j<dot; j++)
-			tab[i][j]=-1;
-		poli[i]=-1;
-	}
+
+	/*for(i=0; i<dot*dot; i++)
+		graf[i]=-1;*/
 
 	for(i=0; i<dot; i++)
-	{//losowanie ilości połączeń.
-	//PRZY STAŁYCH LICZBACH NIE MA PROBLEMÓW, ALE PRZY LOSOWANIU LICZB CZASAMI PĘTLA SIĘ NIE KOŃCZY PRZY OSTATNIM WIERSZU ANI GO NIE WYPISUJE
-		if(i==0 || i==dot-k || i==k-1 || i==dot-1)
-			poli[i]=2;//rand() % 3;
-		if(i>0 && i<k-1)
-			poli[i]=3;//rand() % 4;
-		if(i>dot-k && i<dot-1)
-		     poli[i]=3;//rand() % 4;
-		if((i+1)%k==0)
-		{
-			if(poli[i]==-1)
-				poli[i]=3;//rand() % 4;
-			if(poli[i+1]==-1)
-				poli[i+1]=3;//rand() % 4;
-		}
-
-		if(poli[i]==-1)
-			poli[i]=4;//rand() % 5;;
-	}
-		
-	for(j=0; j<dot-1; j++)
 	{
-		if(j<k && j!=0)
-			if(tab[j-1][j]!=-1)
-				c++;
-		if(j%k==0 && j>=k)
-			if(tab[j-k][j]!=-1)
-				c++;
-		if(j%k!=0 && j>=k)
+		if((i+1)%k==0 && i<dot-1)
 		{
-			if(tab[j-1][j]!=-1)
-				c++;
-			if(tab[j-k][j]!=-1)
-				c++;
-		}
-		while(poli[j]-c>0)
-		{
-			if((j+1)%k!=0 && j<dot-k)
+			x=rand()%2;
+			if(x==1)
 			{
-				x=rand() % 2;
-				if(x==0 && tab[j+1][j]==-1)
+				graf[i+((i+k)*dot)]=los(po, pk);
+				graf[(i+k)+i*dot]=graf[i+((i+k)*dot)];
+			}
+		}
+		if(i>=dot-k && i<dot-1)
+		{
+			x=rand()%2;
+			if(x==1)
+			{
+				graf[(i+1)+i*dot]=los(po, pk);
+				graf[i+(i+1)*dot]=graf[(i+1)+i*dot];
+			}
+		}
+		if(i<dot-k && (i+1)%k!=0)
+		{
+			x=rand()%3;
+			if(x==2)
+			{
+				graf[i+((i+k)*dot)]=los(po, pk);
+				graf[(i+k)+i*dot]=graf[i+((i+k)*dot)];
+				graf[(i+1)+i*dot]=los(po, pk);
+				graf[i+(i+1)*dot]=graf[(i+1)+i*dot];
+			}
+			if(x==1)
+			{
+				x=rand()%100;
+				if(x<50)
 				{
-					tab[j+1][j]=los(p, pk);
-					tab[j][j+1]=tab[j+1][j];
-					c++;
+					graf[i+((i+k)*dot)]=los(po, pk);
+					graf[(i+k)+i*dot]=graf[i+((i+k)*dot)];
 				}
-				if(x==1 && tab[j+k][j]==-1)
+				if(x>=50)
 				{
-					tab[j+k][j]=los(p, pk);
-					tab[j][j+k]=tab[j+k][j];
-					c++;
+					graf[(i+1)+i*dot]=los(po, pk);
+					graf[i+(i+1)*dot]=graf[(i+1)+i*dot];
 				}
 			}
-			if((j+1)%k==0)
-			{
-				tab[j+k][j]=los(p, pk);
-				tab[j][j+k]=tab[j+k][j];
-				c++;
-			}
-			if(j>(dot-k-1) && j<dot-1)
-				{
-					tab[j+1][j]=los(p, pk);
-					tab[j][j+1]=tab[j+1][j];
-					c++;
-				}	
 		}
-		c=0;
 	}
-	int ind=0;
-	for(i=0; i<dot; i++)
-		for(j=0; j<dot; j++)
-		{
-			macierz[ind]=tab[i][j];
-			ind++;
-		}
-
-	return macierz;
+	return graf;
+	free(graf);
 }

@@ -48,7 +48,7 @@ void WriteToFile(char* file_name, graph_t ptr){
        exit(EXIT_FAILURE);
      }       
 
-    fprintf(out,"%d %d", ptr->columns, ptr->rows);
+    fprintf(out,"%d  %d", ptr->rows, ptr->columns);
       for(int j =0; j<n; j++){
 	 fprintf(out,"\n\t ");
 	   for(int i=0; i<n; i++)
@@ -168,7 +168,7 @@ int* ReadNodesFromFile(char* file_name, int n, graph_t ptr){
 	    fprintf(stderr, "[czytacz.c]: Nie da sie znalezc drogi z badz do tego wierzcholka: [ %d ] \n",NodesToFind[i]);
     	    exit(EXIT_FAILURE);
 	  }
-fclose(in);
+
 return NodesToFind;
 }
 
