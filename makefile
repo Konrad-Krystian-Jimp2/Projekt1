@@ -20,8 +20,9 @@ test: test_czytacz.o czytacz.o
 	./test_czytacz dane/mygraph
 	./test_que
 	./test_BFS dane/mydane1 8
-	./test_gen
 test2: 
 	./test_czytacz dane/graph2x3
+testgen: test_gen.o generator.o czytacz.o 
+	$(CC) -o test_gen $^
 	
 
