@@ -1,4 +1,4 @@
-#define INIT_SIZE 1512
+#define INIT_SIZE 512
 #include <stdio.h>
 #include <stdlib.h>
 #include "queue.h"
@@ -6,7 +6,7 @@
 
 ptr_t initQue(){
 	ptr_t q_t = malloc(sizeof(q_t));
-	q_t->que = malloc( INIT_SIZE * sizeof( *q_t->que ));
+	q_t->que = malloc( INIT_SIZE * sizeof( int ));
 	  if(q_t->que == NULL){
             fprintf(stderr, "[queue.c]: Nie udalo sie zaalokowac pamieci\n");
 	    exit(4);
@@ -30,7 +30,6 @@ void DoubleSize(ptr_t q_t){
 
 	q_t->SIZE *=2;
 	q_t->que = realloc(q_t->que, q_t->SIZE*sizeof(*q_t->que));
-
 #ifdef DEBUG
  printf("x2\n");	
 #endif

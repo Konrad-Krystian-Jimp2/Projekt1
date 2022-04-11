@@ -19,4 +19,5 @@ void WriteToFile(char* file_name, graph_t ptr);
 
 void ReadFromFile(char* file_name, graph_t ptr);
 
+int* ReadNodesFromFile(char* file_name, int n, graph_t ptr);
 #endif

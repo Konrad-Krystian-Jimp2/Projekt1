@@ -5,7 +5,8 @@
 #include "czytacz.h"
 #include "bfs.h"
 #include "generator.h"
-#include "dijkstra.h"
+#include "dij.h"
+
 int main(int argc, char *argv[]) {
     
 	if(argc==1)
@@ -116,15 +117,39 @@ int main(int argc, char *argv[]) {
      graph_t ptr2 = Make_Graph_Struct();
      ReadFromFile( Read_Graph, ptr2 );
          
-     if( if_BFS ){
-      int* path = BFS( ptr2 );
-        if( path == NULL )
-          exit(EXIT_FAILURE);	
-     free(path); 
-     }
+       if( if_BFS ){
+         int* pathBFS = BFS( ptr2 );
+           if( pathBFS == NULL ){
+     	     free(pathBFS); 
+             exit(EXIT_FAILURE);
+           }	  
+       free(pathBFS); 
+       }
 
-    freeSpace(ptr2);
-    }
+      if(if_N && if_file_RN){
+      int* Nodes = ReadNodesFromFile( Read_Nodes, n, ptr2 ); 
+	
+        for(int z=0;z<n;z++){
+	  printf("Szukam sciezki z \t%d --- do --- > %d \n", Nodes[z*2], Nodes[z*2+1]);
+	dij_t pd = dij( ptr2, Nodes[z*2], Nodes[z*2+1] );
+	ShowPath( pd, Nodes[z*2], Nodes[z*2+1], ptr2->columns * ptr2->rows );
+	  printf("Waga tej sciezki to: %g\n\n\n", pd->dist[Nodes[z*2+1]]);
+	freeDIJ(pd);	
+	}
+
+      free(Nodes);
+      }	
+     	
+
+
+
+
+
+
+
+
+      freeSpace(ptr2);
+      }
 
     return 0;
 }
