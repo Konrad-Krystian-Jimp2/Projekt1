@@ -3,6 +3,6 @@
 
 double los(double, double);
 
-double *grafgen(int, int, double, double);
+double *grafgen(double*, int, int, double, double);
 
 #endif

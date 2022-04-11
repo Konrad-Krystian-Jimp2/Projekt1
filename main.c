@@ -39,7 +39,8 @@ int main(int argc, char *argv[]) {
         switch (opt) {
 	     case 'h' : Show_Error(1);
 		 break;
-	     case 'g' : Make_Graph = optarg; if_file_MG++;      
+	     case 'g' : Make_Graph = optarg; if_file_MG++;
+		  	Read_Graph = optarg;	
                  break;
              case 'p' : if( !(atoi(optarg) - atof(optarg)) && atoi(optarg) > 1){   // sprawdzam czy calkowita i czy wieksza niz jeden
 		 	p = atoi(optarg);
@@ -95,15 +96,22 @@ int main(int argc, char *argv[]) {
      printf("\t Generuje graf\n");  
 
       graph_t ptr = Make_Graph_Struct();
-      MakeSpace_Graph( ptr, p, q );
-      ptr->graph=grafgen(q, p, k, l);
-      WriteToFile( Read_Graph, ptr );
+      MakeSpace_Graph(ptr, p, q);
+      ptr->graph=grafgen(ptr->graph, p, q, k, l);
+      WriteToFile(Read_Graph, ptr);
 
     
 
 	if(if_BFS){    // gdy sprawdzanie spojnosc, jezeli szukanie to rowniez if(if_BFS && if_N && if_file_RN)  czyli liczba szukanych par oraz info jakie to pary.
 	//uzycie BFS
 	    printf("\t BFS\n");
+	    int* pathBFS = BFS( ptr );
+           if( pathBFS == NULL ){
+     	     free(pathBFS); 
+             exit(EXIT_FAILURE);
+           }	  
+       free(pathBFS); 
+
 	}
 
 	//if(if_N && if_file_RN ...   -> Dijkstra
