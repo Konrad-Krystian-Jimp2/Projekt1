@@ -10,7 +10,7 @@
 int main(int argc, char *argv[]) {
     
 	if(argc==1)
-	Show_Error(1);
+		Show_Error(1);
     	
     int opt;
     int if_BFS = 0, if_file_MG = 0, if_P = 0,if_Q =0, if_F = 0, if_T = 0, if_file_RG = 0, if_file_RN = 0, if_N = 0;  // imitacja boolean 0- fałsz, 1- prawda czyli dane wystąpienie podczas wprowadzania danych 
@@ -19,9 +19,7 @@ int main(int argc, char *argv[]) {
     char* Read_Nodes = NULL;
     char* Read_Graph = NULL;
     int p,q; // p - kolumny, q - wiersze
-    int k;
-    int l;
-    int n, i;
+    int k, l, n, i;
 
 
 
@@ -82,40 +80,52 @@ int main(int argc, char *argv[]) {
 
 
     if(if_F && if_T) // gdy początek przedziału jest większy niż koniec)
-     if(k>l)
-     Show_Error(3);
+    	if(k>l)
+     		Show_Error(3);
 
     if(if_file_MG && if_P && if_Q && (!if_F  || !if_T)) // gdy nie podano przedziału wagowego
-     Show_Error(8);
+     	Show_Error(8);
 
     if(!if_file_MG && if_F && if_T && if_P && if_Q) //gdy nie podano -g a podano resztę
-     Show_Error(5);
+     	Show_Error(5);
 
         
     if(if_file_MG && if_F && if_T && if_P && if_Q){
-     printf("\t Generuje graf\n");  
+     	printf("\t Generuje graf\n");  
 
-      graph_t ptr = Make_Graph_Struct();
-      MakeSpace_Graph(ptr, p, q);
-      ptr->graph=grafgen(ptr->graph, p, q, k, l);
-      WriteToFile(Read_Graph, ptr);
+      	graph_t ptr = Make_Graph_Struct();
+      	MakeSpace_Graph(ptr, p, q);
+      	ptr->graph=grafgen(ptr->graph, p, q, k, l);
+      	WriteToFile(Read_Graph, ptr);
 
     
 
 	if(if_BFS){    // gdy sprawdzanie spojnosc, jezeli szukanie to rowniez if(if_BFS && if_N && if_file_RN)  czyli liczba szukanych par oraz info jakie to pary.
 	//uzycie BFS
-	    printf("\t BFS\n");
-	    int* pathBFS = BFS( ptr );
-           if( pathBFS == NULL ){
-     	     free(pathBFS); 
-             exit(EXIT_FAILURE);
-           }	  
-       free(pathBFS); 
+		printf("\t BFS\n");
+		int* pathBFS = BFS( ptr );
+		if( pathBFS == NULL ){
+     	     		free(pathBFS); 
+             		exit(EXIT_FAILURE);
+           	}	  
+	free(pathBFS); 
 
 	}
 
 	//if(if_N && if_file_RN ...   -> Dijkstra
+	if(if_N && if_file_RN){
+		int* Nodes = ReadNodesFromFile( Read_Nodes, n, ptr ); 
+	
+		for(int z=0;z<n;z++){
+			printf("Szukam sciezki z \t%d --- do --- > %d \n", Nodes[z*2], Nodes[z*2+1]);
+			dij_t pd = dij( ptr, Nodes[z*2], Nodes[z*2+1] );
+			ShowPath( pd, Nodes[z*2], Nodes[z*2+1], ptr->columns * ptr->rows );
+			printf("Waga tej sciezki to: %g\n\n\n", pd->dist[Nodes[z*2+1]]);
+			freeDIJ(pd);	
+		}
 
+		free(Nodes);
+      	}	
         freeSpace(ptr);
     }
 
@@ -135,27 +145,19 @@ int main(int argc, char *argv[]) {
        }
 
       if(if_N && if_file_RN){
-      int* Nodes = ReadNodesFromFile( Read_Nodes, n, ptr2 ); 
+     	 int* Nodes = ReadNodesFromFile( Read_Nodes, n, ptr2 ); 
 	
         for(int z=0;z<n;z++){
 	  printf("Szukam sciezki z \t%d --- do --- > %d \n", Nodes[z*2], Nodes[z*2+1]);
-	dij_t pd = dij( ptr2, Nodes[z*2], Nodes[z*2+1] );
-	ShowPath( pd, Nodes[z*2], Nodes[z*2+1], ptr2->columns * ptr2->rows );
-	  printf("Waga tej sciezki to: %g\n\n\n", pd->dist[Nodes[z*2+1]]);
-	freeDIJ(pd);	
+		dij_t pd = dij( ptr2, Nodes[z*2], Nodes[z*2+1] );
+		ShowPath( pd, Nodes[z*2], Nodes[z*2+1], ptr2->columns * ptr2->rows );
+		printf("Waga tej sciezki to: %g\n\n\n", pd->dist[Nodes[z*2+1]]);
+		freeDIJ(pd);	
 	}
 
       free(Nodes);
       }	
      	
-
-
-
-
-
-
-
-
       freeSpace(ptr2);
       }
 
