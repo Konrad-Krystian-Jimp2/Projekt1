@@ -14,12 +14,8 @@ double los(double min, double max)//losowanie liczb rzeczywistych
 double *grafgen(double *graf, int w, int k, double po, double pk)
 {
 	int i, j, dot=w*k, x;
-	//double *graf=malloc((dot*dot)*sizeof(double));
-	//double *graf=graph;
-	srand(time(NULL));
 
-	/*for(i=0; i<dot*dot; i++)
-		graf[i]=-1;*/
+	srand(time(NULL));
 
 	for(i=0; i<dot; i++)
 	{

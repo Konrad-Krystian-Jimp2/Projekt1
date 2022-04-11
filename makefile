@@ -1,8 +1,7 @@
   #CFLAGS= -g -Wall -Wextra
 
-grafexe: main.o komunikaty.o generator.o bfs.o queue.o pqmin.o dij.o czytacztemp.o
+grafexe: main.o komunikaty.o generator.o bfs.o queue.o pqmin.o dij.o czytacz.o
 	$(CC) -g -o grafexe $^ 
-dij.c:
 
 clean:
 	rm *.o
@@ -12,6 +11,7 @@ clean:
 	rm test_que
 	rm test_BFS
 	rm test_gen
+
 test: test_czytacz.o czytacz.o 
 	$(CC) -o test_czytacz $^
 	$(CC) -o test_que test_que.c queue.c 
@@ -20,9 +20,17 @@ test: test_czytacz.o czytacz.o
 	./test_czytacz dane/mygraph
 	./test_que
 	./test_BFS dane/mydane1 8
-test2: 
+
+test2: test_czytacz.o czytacz.o 
+	$(CC) -o test_czytacz $^
 	./test_czytacz dane/graph2x3
-testgen: test_gen.o generator.o czytacz.o 
+
+testgen: main.o komunikaty.o generator.o czytacz.o dij.o bfs.o queue.o pqmin.o 
 	$(CC) -o test_gen $^
+	./test_gen -g wynik_testu_gen -p 10 -q 10 -f 0 -t 1000
+
+testgen2: main.o komunikaty.o generator.o czytacz.o dij.o bfs.o queue.o pqmin.o 
+	$(CC) -o test_gen $^
+	./test_gen -g wynik_testu_gen -p 150 -q 150 -f 0.1 -t 1
 	
 
