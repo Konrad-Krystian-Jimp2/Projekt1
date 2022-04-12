@@ -26,11 +26,11 @@ test2: test_czytacz.o czytacz.o
 	./test_czytacz dane/graph2x3
 
 testgen: main.o komunikaty.o generator.o czytacz.o dij.o bfs.o queue.o pqmin.o 
-	$(CC) -o test_gen $^
+	$(CC) -o grafexe $^
 	./grafexe -g wynik_testu_gen -p 10 -q 10 -f 0 -t 1000
 
 testgen2: main.o komunikaty.o generator.o czytacz.o dij.o bfs.o queue.o pqmin.o 
-	$(CC) -o test_gen $^
+	$(CC) -o grafexe $^
 	./grafexe -g wynik_testu_gen -p 150 -q 150 -f 0.1 -t 1
 	
 
