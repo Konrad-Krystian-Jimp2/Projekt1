@@ -10,13 +10,11 @@ clean:
 	rm log
 	rm test_que
 	rm test_BFS
-	rm test_gen
 
 test: test_czytacz.o czytacz.o 
 	$(CC) -o test_czytacz $^
 	$(CC) -o test_que test_que.c queue.c 
 	$(CC) -o test_BFS bfs_test.c bfs.c queue.c czytacz.c 
-	$(CC) -o test_gen test_gen.c czytacz.c generator.c
 	./test_czytacz dane/mygraph
 	./test_que
 	./test_BFS dane/mydane1 8
