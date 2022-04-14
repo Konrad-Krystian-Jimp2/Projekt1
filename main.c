@@ -13,18 +13,20 @@ int main(int argc, char *argv[]) {
 		Show_Error(1);
     	
     int opt;
-    int if_BFS = 0, if_file_MG = 0, if_P = 0,if_Q =0, if_F = 0, if_T = 0, if_file_RG = 0, if_file_RN = 0, if_N = 0;  // imitacja boolean 0- fałsz, 1- prawda czyli dane wystąpienie podczas wprowadzania danych 
+    int if_BFS = 0, if_file_MG = 0, if_P = 0,if_Q =0, if_F = 0, if_T = 0, if_file_RG = 0, if_file_RN = 0, if_N = 0, if_spojny = 0;  // imitacja boolean 0- fałsz, 1- prawda czyli dane wystąpienie podczas wprowadzania danych 
     
     char* Make_Graph = NULL;
     char* Read_Nodes = NULL;
     char* Read_Graph = NULL;
     int p,q; // p - kolumny, q - wiersze
-    int k, l, n, i;
+    int n, i;
+    double k,l;
 
 
 
     static struct option long_options[] = {
         {"help",      no_argument,       0,  'h' },
+        {"spojny",    no_argument,       0,  'l' },
         {"bfs",       no_argument,       0,  'b' },
         {"file",    required_argument,   0,  'z' },
         {0,           0,                 0,   0  }
@@ -38,7 +40,8 @@ int main(int argc, char *argv[]) {
 	     case 'h' : Show_Error(1);
 		 break;
 	     case 'g' : Make_Graph = optarg; if_file_MG++;
-		  	Read_Graph = optarg;	
+                 break;
+	     case 'l' : if_spojny++;
                  break;
              case 'p' : if( !(atoi(optarg) - atof(optarg)) && atoi(optarg) > 1){   // sprawdzam czy calkowita i czy wieksza niz jeden
 		 	p = atoi(optarg);
@@ -54,11 +57,11 @@ int main(int argc, char *argv[]) {
                  break;
              case 'f' : if(atoi(optarg) < 0)
 			Show_Error(7);
-		 	k = atoi(optarg); if_F++; 
+		 	k = atof(optarg); if_F++; 
                  break;
              case 't' : if(atoi(optarg) < 0)
 			Show_Error(7);
-		 	l = atoi(optarg); if_T++;
+		 	l = atof(optarg); if_T++;
                  break;
 	     case 'r' : Read_Graph = optarg; if_file_RG++;
 		 break;
@@ -90,19 +93,18 @@ int main(int argc, char *argv[]) {
      	Show_Error(5);
 
         
-    if(if_file_MG && if_F && if_T && if_P && if_Q){
+    if(if_file_MG && if_F && if_T && if_P && if_Q && !if_file_RG){
      	printf("\t Generuje graf\n");  
       	graph_t ptr = Make_Graph_Struct();
       	MakeSpace_Graph(ptr, p, q);
-      	ptr->graph=grafgen(ptr->graph, p, q, k, l);
-      	WriteToFile(Read_Graph, ptr);
-	printf("Wygenerowany graf znajduje się w podanym przez użytkownika pliku\n");
+      	ptr->graph=grafgen(ptr->graph, p, q, k, l, if_spojny);
+      	WriteToFile(Make_Graph, ptr);
+	printf("Wygenerowany graf znajduje się w: \t %s\n",Make_Graph );
 
-    
+	    
 
 	if(if_BFS){    // gdy sprawdzanie spojnosc, jezeli szukanie to rowniez if(if_BFS && if_N && if_file_RN)  czyli liczba szukanych par oraz info jakie to pary.
 	//uzycie BFS
-		printf("\t BFS\n");
 		int* pathBFS = BFS( ptr );
 		if( pathBFS == NULL ){
      	     		free(pathBFS); 
@@ -119,19 +121,21 @@ int main(int argc, char *argv[]) {
 		for(int z=0;z<n;z++){
 			printf("Szukam sciezki z \t%d --- do --- > %d \n", Nodes[z*2], Nodes[z*2+1]);
 			dij_t pd = dij( ptr, Nodes[z*2], Nodes[z*2+1] );
-			ShowPath( pd, Nodes[z*2], Nodes[z*2+1], ptr->columns * ptr->rows );
-			printf("Waga tej sciezki to: %g\n\n\n", pd->dist[Nodes[z*2+1]]);
+			double tem = ShowPath( pd, Nodes[z*2], Nodes[z*2+1], ptr->columns * ptr->rows );
+			  if(tem != -1)
+			    printf("Waga tej sciezki to: %g\n\n\n",tem);
 			freeDIJ(pd);	
 		}
 
 		free(Nodes);
       	}	
         freeSpace(ptr);
+	return 0;
     }
 
     
 
-    if(if_file_RG){
+    if(if_file_RG && !if_file_MG && !if_F && !if_T && !if_P && !if_Q && !if_spojny){
      graph_t ptr2 = Make_Graph_Struct();
      ReadFromFile( Read_Graph, ptr2 );
          
@@ -150,8 +154,9 @@ int main(int argc, char *argv[]) {
         for(int z=0;z<n;z++){
 	  printf("Szukam sciezki z \t%d --- do --- > %d \n", Nodes[z*2], Nodes[z*2+1]);
 		dij_t pd = dij( ptr2, Nodes[z*2], Nodes[z*2+1] );
-		ShowPath( pd, Nodes[z*2], Nodes[z*2+1], ptr2->columns * ptr2->rows );
-		printf("Waga tej sciezki to: %g\n\n\n", pd->dist[Nodes[z*2+1]]);
+		  double tem = ShowPath( pd, Nodes[z*2], Nodes[z*2+1], ptr2->columns * ptr2->rows );
+		    if(tem != -1)
+		      printf("Waga tej sciezki to: %g\n\n\n",tem);
 		freeDIJ(pd);	
 	}
 
@@ -159,7 +164,11 @@ int main(int argc, char *argv[]) {
       }	
      	
       freeSpace(ptr2);
+      return 0;
       }
 
-    return 0;
+	
+    Show_Error(9); // Nie podano prawidlowej konfiguracji argumentow
+    Show_Error(1); // help
+    return 1;
 }

@@ -10,7 +10,7 @@ clean:
 	rm log
 	rm test_que
 	rm test_BFS
-
+	rm wyniki
 test: test_czytacz.o czytacz.o 
 	$(CC) -o test_czytacz $^
 	$(CC) -o test_que test_que.c queue.c 

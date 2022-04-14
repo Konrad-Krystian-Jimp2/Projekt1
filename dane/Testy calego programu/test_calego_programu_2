@@ -1,0 +1,77 @@
+./grafexe -g wygenerowanygraf1 -p 9 -q 7 -f 0 -t 1 --bfs -n 8 --file grafff
+         Generuje graf
+         BFS
+
+        Podany graf jest        niespojny.
+
+Szukam sciezki z        8 --- do --- > 0
+7 -> 0
+8 -> 7
+Waga tej sciezki to: 1.22056
+
+
+Szukam sciezki z        1 --- do --- > 0
+1 -> 0
+Waga tej sciezki to: 0.148755
+
+
+Szukam sciezki z        2 --- do --- > 0
+Drogi nie ma i nie bedzie :(
+Waga tej sciezki to: 2.14748e+09
+
+
+Szukam sciezki z        3 --- do --- > 0
+7 -> 0
+14 -> 7
+15 -> 14
+16 -> 15
+17 -> 16
+18 -> 17
+11 -> 18
+4 -> 11
+3 -> 4
+Waga tej sciezki to: 3.11367
+
+
+Szukam sciezki z        4 --- do --- > 0
+7 -> 0
+14 -> 7
+15 -> 14
+16 -> 15
+17 -> 16
+18 -> 17
+11 -> 18
+4 -> 11
+Waga tej sciezki to: 2.41575
+
+
+Szukam sciezki z        5 --- do --- > 0
+7 -> 0
+14 -> 7
+15 -> 14
+16 -> 15
+17 -> 16
+18 -> 17
+11 -> 18
+12 -> 11
+5 -> 12
+Waga tej sciezki to: 4.08119
+
+
+Szukam sciezki z        6 --- do --- > 0
+7 -> 0
+14 -> 7
+15 -> 14
+16 -> 15
+17 -> 16
+18 -> 17
+11 -> 18
+12 -> 11
+13 -> 12
+6 -> 13
+Waga tej sciezki to: 4.5326
+
+
+Szukam sciezki z        7 --- do --- > 0
+7 -> 0
+Waga tej sciezki to: 0.542098

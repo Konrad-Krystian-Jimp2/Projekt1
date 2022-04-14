@@ -48,13 +48,14 @@ void WriteToFile(char* file_name, graph_t ptr){
        exit(EXIT_FAILURE);
      }       
 
-    fprintf(out,"%d  %d", ptr->columns, ptr->rows);
+    fprintf(out,"%d %d", ptr->columns, ptr->rows);
       for(int j =0; j<n; j++){
 	 fprintf(out,"\n\t ");
 	   for(int i=0; i<n; i++)
 	     if(ptr->graph[i+j*n] != -1)
 	       fprintf(out,"%d :%0.16f  ",i, ptr->graph[i+j*n]); 		
       }
+      fprintf(out,"\n");
    fclose(out);
 }		
 
@@ -94,7 +95,7 @@ void ReadFromFile(char* file_name, graph_t ptr){
 #ifdef DEBUG	
      printf("%s",BUF);
      printf("HowManyNumbersInRow = %d\n", HowManyNumbersInRow);
-     printf("WhichRow = %d\n\n\n", HowManyRows);
+     printf("WhichRow = %d\n", HowManyRows);
 #endif  
     NumbersInLine[HowManyRows] = HowManyNumbersInRow;
    	 
@@ -116,8 +117,9 @@ void ReadFromFile(char* file_name, graph_t ptr){
       }
        
 
-
-    fseek(in,4,SEEK_SET); // cofnięcie się na początek pliku (w miejsce po liczbach kolumn i wierszy)
+    int bin;
+    fseek(in,0,SEEK_SET); // cofnięcie się na początek pliku 
+    fscanf(in, "%d %d\n", &bin, &bin); // pomijam dwie pierwsze liczby 
 
     int tempWhereConnection;
     double tempValue;
@@ -129,9 +131,9 @@ void ReadFromFile(char* file_name, graph_t ptr){
 		   exit(EXIT_FAILURE);
 	      }
       	
-#ifdef DEBUG	      
-    printf("Row: %d, Column: %d and Value: %lf\n", x, tempWhereConnection, tempValue);
-#endif	    
+//#ifdef DEBUG	      
+//    printf("Row: %d, Column: %d and Value: %lf\n", x, tempWhereConnection, tempValue);
+//#endif	    
 	      ptr->graph[x*n + tempWhereConnection] = tempValue;
 	  }
 #ifdef DEBUG
@@ -168,7 +170,7 @@ int* ReadNodesFromFile(char* file_name, int n, graph_t ptr){
 	    fprintf(stderr, "[czytacz.c]: Nie da sie znalezc drogi z badz do tego wierzcholka: [ %d ] \n",NodesToFind[i]);
     	    exit(EXIT_FAILURE);
 	  }
-
+fclose(in);
 return NodesToFind;
 }
 
