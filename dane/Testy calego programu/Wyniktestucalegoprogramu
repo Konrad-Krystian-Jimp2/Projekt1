@@ -1,0 +1,26 @@
+./grafexe -g aaa -p 10 -q 10 -f 0 -t 10 --bfs -n 4 --file drogi
+         Generuje graf
+Wygenerowany graf znajduje się w podanym przez użytkownika pliku
+         BFS
+
+        Podany graf jest        niespojny.
+
+Szukam sciezki z        0 --- do --- > 10
+0 -> 10
+Waga tej sciezki to: 8.74411
+
+
+Szukam sciezki z        5 --- do --- > 8
+Drogi nie ma i nie bedzie :(
+Waga tej sciezki to: 2.14748e+09
+
+
+Szukam sciezki z        6 --- do --- > 1
+Drogi nie ma i nie bedzie :(
+Waga tej sciezki to: 2.14748e+09
+
+
+Szukam sciezki z        2 --- do --- > 11
+12 -> 11
+2 -> 12
+Waga tej sciezki to: 4.29309

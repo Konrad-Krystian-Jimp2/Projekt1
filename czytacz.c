@@ -48,7 +48,7 @@ void WriteToFile(char* file_name, graph_t ptr){
        exit(EXIT_FAILURE);
      }       
 
-    fprintf(out,"%d  %d", ptr->rows, ptr->columns);
+    fprintf(out,"%d  %d", ptr->columns, ptr->rows);
       for(int j =0; j<n; j++){
 	 fprintf(out,"\n\t ");
 	   for(int i=0; i<n; i++)

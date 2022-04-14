@@ -92,11 +92,11 @@ int main(int argc, char *argv[]) {
         
     if(if_file_MG && if_F && if_T && if_P && if_Q){
      	printf("\t Generuje graf\n");  
-
       	graph_t ptr = Make_Graph_Struct();
       	MakeSpace_Graph(ptr, p, q);
       	ptr->graph=grafgen(ptr->graph, p, q, k, l);
       	WriteToFile(Read_Graph, ptr);
+	printf("Wygenerowany graf znajduje się w podanym przez użytkownika pliku\n");
 
     
 
