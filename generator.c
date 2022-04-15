@@ -13,10 +13,9 @@ double los(double min, double max)//losowanie liczb rzeczywistych
 
 double *grafgen(double *graf, int k, int w, double po, double pk, int if_spojny)
 {
-	int i, j, dot=w*k, x, niesp;
+	int i, j, dot=w*k, x;
 	
 	srand(time(NULL));
-	niesp=rand()% (dot+1);
 	for(i=0; i<dot; i++)
 	{
 		if((i+1)%k==0 && i<dot-1)
