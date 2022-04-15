@@ -92,15 +92,18 @@ int main(int argc, char *argv[]) {
     if(!if_file_MG && if_F && if_T && if_P && if_Q) //gdy nie podano -g a podano resztę
      	Show_Error(5);
 
-        
-    if(if_file_MG && if_F && if_T && if_P && if_Q && !if_file_RG){
-     	printf("\t Generuje graf\n");  
-      	graph_t ptr = Make_Graph_Struct();
-      	MakeSpace_Graph(ptr, p, q);
-      	ptr->graph=grafgen(ptr->graph, p, q, k, l, if_spojny);
-      	WriteToFile(Make_Graph, ptr);
-	printf("Wygenerowany graf znajduje się w: \t %s\n",Make_Graph );
+    if(p*q>40000){
+	    Show_Error(10);
+	    return 0;
+    }
+    if(if_file_MG && if_F && if_T && if_P && if_Q && !if_file_RG && p*q<=40000){
 
+		printf("\t Generowanie grafu\n");  
+      		graph_t ptr = Make_Graph_Struct();
+      		MakeSpace_Graph(ptr, p, q);
+      		ptr->graph=grafgen(ptr->graph, p, q, k, l, if_spojny);
+      		WriteToFile(Make_Graph, ptr);
+		printf("Wygenerowany graf znajduje się w: \t %s\n",Make_Graph );
 	    
 
 	if(if_BFS){    // gdy sprawdzanie spojnosc, jezeli szukanie to rowniez if(if_BFS && if_N && if_file_RN)  czyli liczba szukanych par oraz info jakie to pary.

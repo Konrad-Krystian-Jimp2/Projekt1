@@ -7,6 +7,7 @@ void Show_Error(int which_error){
 	switch(which_error){
 	   case 1 :
 	      fprintf(stderr,"\n\tUzycie programu \033[32mGrafExe:\033[0m \n"
+			     "UWAGA: Obslugiwany graf moze by¿ wielkosci maksymalnie 200x200 (40000 wierzcholkow)\n"
 			     "/grafexe [ -h|--help ] | [ [-g nazwa_pliku  -p <r> -q <s>  -f  <k> -t  <l> [--bfs] [-n liczba_sciezek --file plikf]]\n"
 			     "| [-r nazwa_pliku [ --bfs ] [-n liczba_sciezek --file plikf]  ] ] \n\n"
 			     " -g inicjalizuje generowanie grafu\n"
@@ -27,11 +28,11 @@ void Show_Error(int which_error){
 	      exit(1);
 	   break;
 	   case 2 :
-	      fprintf(stderr,"Wprowadzono niepoprawna liczbe wezlow\n");
+	      fprintf(stderr,"Wprowadzono niepoprawna liczbe kolumn lub wierszy\n");
 	      exit(2);
 	   break;
 	   case 3 :
-	      fprintf(stderr,"Podany przedzial <k;l> nie jest poprawny\n");
+	      fprintf(stderr,"Podany przedzial wag nie jest poprawny\n");
 	      exit(3);
 	   break;
 	   case 4 :
@@ -58,7 +59,9 @@ void Show_Error(int which_error){
 	   case 9 :
 	      fprintf(stderr,"\033[33m \n\t Sprawdz poprawnosc wprowadzanych argumentow.\033[0m\n\n");
 	   break; 
-	
+	   case 10:
+	   	fprintf(stderr, "Wielkosc grafu jest zbyt duza. Obslugiwane grafy moga miec co najwyzej 40000 wierzcholkow.\n");
+		break;
 
 	   default:
 	      fprintf(stderr, "error!\n");
